@@ -6,12 +6,14 @@
     <script src="./script.js" defer></script>
   </head>
   <body>
+    <button id="sortDateButton">Sort by date</button>
     <ul id="list"></ul>
 
     <form id="new-todo-form">
-      <label for="todo-input">New Todo</label>
+      <label for="todo-input">New Deadline</label>
       <input type="text" id="todo-input" />
-      <button type="submit">Add Todo</button>
+      <input type="date" id="todo-date" />
+      <button type="submit">Add Deadline</button>
     </form>
 
     <template id="list-item-template">
@@ -19,6 +21,7 @@
         <label class="list-item-label">
           <input type="checkbox" data-list-item-checkbox />
           <span data-list-item-text></span>
+          <span data-list-item-date></span>
         </label>
         <button data-button-delete>Delete</button>
       </li>

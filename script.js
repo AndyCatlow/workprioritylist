@@ -1,5 +1,8 @@
+const sortDateButton = document.querySelector("#sortDateButton");
+
 const form = document.querySelector("#new-todo-form");
 const todoInput = document.querySelector("#todo-input");
+const todoDate = document.querySelector("#todo-date");
 const list = document.querySelector("#list");
 const template = document.querySelector("#list-item-template");
 const LOCAL_STORAGE_PREFIX = "ADVANCED_TODO_LIST";
@@ -31,9 +34,11 @@ form.addEventListener("submit", (e) => {
   e.preventDefault();
 
   const todoName = todoInput.value;
+  const todoDateValue = todoDate.value;
   if (todoName === "") return;
   const newTodo = {
     name: todoName,
+    date: todoDateValue,
     complete: false,
     id: new Date().valueOf().toString(),
   };
@@ -41,6 +46,7 @@ form.addEventListener("submit", (e) => {
   renderTodo(newTodo);
   saveTodos();
   todoInput.value = "";
+  todoDate.value = "";
 });
 
 function renderTodo(todo) {
@@ -49,6 +55,8 @@ function renderTodo(todo) {
   listItem.dataset.todoId = todo.id;
   const textElement = templateClone.querySelector("[data-list-item-text]");
   textElement.innerText = todo.name;
+  const dateElement = templateClone.querySelector("[data-list-item-date]");
+  dateElement.innerText = todo.date;
   const checkbox = templateClone.querySelector("[data-list-item-checkbox]");
   checkbox.checked = todo.complete;
   list.appendChild(templateClone);
@@ -62,3 +70,14 @@ function loadTodos() {
 function saveTodos() {
   localStorage.setItem(TODOS_STORAGE_KEY, JSON.stringify(todos));
 }
+
+sortDateButton.addEventListener("click", () => {
+  todos.sort(
+    (a, b) =>
+      parseInt(a.date.replace(/(-)/g, "")) -
+      parseInt(b.date.replace(/(-)/g, ""))
+  );
+  list.innerHTML = "";
+  todos.forEach(renderTodo);
+  saveTodos();
+});
