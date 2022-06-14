@@ -10,6 +10,7 @@ const TODOS_STORAGE_KEY = `${LOCAL_STORAGE_PREFIX}-todos`;
 let todos = loadTodos();
 todos.forEach(renderTodo);
 
+// toggle completed
 list.addEventListener("change", (e) => {
   if (!e.target.matches("[data-list-item-checkbox]")) return;
 
@@ -20,6 +21,7 @@ list.addEventListener("change", (e) => {
   saveTodos();
 });
 
+// delete item
 list.addEventListener("click", (e) => {
   if (!e.target.matches("[data-button-delete]")) return;
 
@@ -30,6 +32,7 @@ list.addEventListener("click", (e) => {
   saveTodos();
 });
 
+// add new item
 form.addEventListener("submit", (e) => {
   e.preventDefault();
 
@@ -49,6 +52,7 @@ form.addEventListener("submit", (e) => {
   todoDate.value = "";
 });
 
+// render list items
 function renderTodo(todo) {
   const templateClone = template.content.cloneNode(true);
   const listItem = templateClone.querySelector(".list-item");
@@ -71,13 +75,12 @@ function saveTodos() {
   localStorage.setItem(TODOS_STORAGE_KEY, JSON.stringify(todos));
 }
 
+// sort list by date
+
 sortDateButton.addEventListener("click", () => {
-  todos.sort(
-    (a, b) =>
-      parseInt(a.date.replace(/(-)/g, "")) -
-      parseInt(b.date.replace(/(-)/g, ""))
-  );
+  todos.sort((a, b) => a.date.replace(/(-)/g, "") - b.date.replace(/(-)/g, ""));
   list.innerHTML = "";
+  console.log(todos);
   todos.forEach(renderTodo);
   saveTodos();
 });
